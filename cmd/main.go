@@ -3,6 +3,10 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"github.com/ShookieShookie/WorkshopImpl/deck"
+	"github.com/ShookieShookie/WorkshopImpl/game"
+	"github.com/ShookieShookie/WorkshopImpl/hand"
+	"github.com/ShookieShookie/WorkshopImpl/player"
 	"math/rand"
 	"os"
 	"time"
@@ -23,22 +27,22 @@ type Player interface {
 
 func main() {
 	rand.Seed(int64(time.Now().Second()))
-	h1 := HandImpl{cards: []int{}}
-	d1 := DeckImpl{cards: []int{}}
+	h1 := hand.HandImpl{cards: []int{}}
+	d1 := deck.DeckImpl{cards: []int{}}
 	d1.getIndex = rand.Intn
 	for i := 0; i < 20; i++ {
 		d1.Add(originalDeck[i])
 	}
-	p1 := PlayerImpl{health: 30, name: "player 1", hand: &h1, deck: &d1}
-	h2 := HandImpl{cards: []int{}}
-	d2 := DeckImpl{cards: []int{}}
+	p1 := player.PlayerImpl{health: 30, name: "player 1", hand: &h1, deck: &d1}
+	h2 := hand.HandImpl{cards: []int{}}
+	d2 := deck.DeckImpl{cards: []int{}}
 	d2.getIndex = rand.Intn
 	for i := 0; i < 20; i++ {
 		d2.Add(originalDeck[i])
 	}
-	p2 := PlayerImpl{health: 30, name: "player 2", hand: &h2, deck: &d2}
+	p2 := player.PlayerImpl{health: 30, name: "player 2", hand: &h2, deck: &d2}
 
-	g := Game{p1: &p1, p2: &p2, userInput: getCard, turn: turn}
+	g := game.Game{p1: &p1, p2: &p2, userInput: getCard, turn: turn}
 	g.Start()
 }
 

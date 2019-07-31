@@ -1,4 +1,4 @@
-package main
+package deck
 
 type DeckImpl struct {
 	getIndex func(int) int
