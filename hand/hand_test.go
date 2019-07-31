@@ -1,9 +1,10 @@
 package hand
 
 import (
-	"github.com/stretchr/testify/assert"
 	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestHandImpl_Add(t *testing.T) {
@@ -179,6 +180,27 @@ func TestHandImpl_Get(t *testing.T) {
 			}
 			if got != tt.want {
 				t.Errorf("HandImpl.Get() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestNewHand(t *testing.T) {
+	tests := []struct {
+		name string
+		want *HandImpl
+	}{
+		{
+			name: "happy",
+			want: &HandImpl{
+				cards: []int{},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := NewHand(); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("NewHand() = %v, want %v", got, tt.want)
 			}
 		})
 	}

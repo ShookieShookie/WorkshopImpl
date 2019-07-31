@@ -5,11 +5,31 @@ import (
 	"strconv"
 )
 
+type Player interface {
+	ApplyDamage(int)
+	GetHealth() int
+	SetMana(int)
+	PlayCard(index int) (int, error)
+	IsDead() bool
+	Draw() error
+	ID() string
+	PrintStats()
+}
+
 type Game struct {
 	p1        Player
 	p2        Player
 	userInput func() string
 	turn      func(iter int, active, passive Player, getInput func() string) bool
+}
+
+func NewGame(p1, p2 Player, userInput func() string, turn func(iter int, active, passive Player, getInput func() string) bool) *Game {
+	return &Game{
+		p1:        p1,
+		p2:        p2,
+		userInput: userInput,
+		turn:      turn,
+	}
 }
 
 func (g *Game) Start() {
@@ -41,7 +61,7 @@ func (g *Game) Start() {
 	fmt.Println("GAME OVER")
 }
 
-func turn(iter int, active, passive Player, getInput func() string) bool {
+func Turn(iter int, active, passive Player, getInput func() string) bool {
 	fmt.Printf("%s's turn!\n", active.ID())
 	active.SetMana(min(iter, 10))
 	err := active.Draw()

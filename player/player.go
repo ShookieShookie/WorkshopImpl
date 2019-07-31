@@ -27,6 +27,16 @@ type PlayerImpl struct {
 var notEnoughMana = errors.New("not enough mana")
 var noCardsInDeck = errors.New("no cards in deck")
 
+func NewPlayer(name string, health, manaCurrent int, hand Hand, deck Deck) *PlayerImpl {
+	return &PlayerImpl{
+		name:        name,
+		health:      health,
+		manaCurrent: manaCurrent,
+		hand:        hand,
+		deck:        deck,
+	}
+}
+
 func (p *PlayerImpl) GetHealth() int {
 	return p.health
 }

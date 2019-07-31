@@ -2,9 +2,11 @@ package game
 
 import (
 	"errors"
+	"reflect"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-	"testing"
 )
 
 type mockPlayer struct {
@@ -335,7 +337,7 @@ func TestTurn(t *testing.T) {
 			}
 			mockUserInputInst := mockUserInput{input: tt.args.userInput}
 			// g := &Game{userInput: mockUserInputInst.get}
-			if got := turn(tt.args.iter, &active, &passive, mockUserInputInst.get); got != tt.want {
+			if got := Turn(tt.args.iter, &active, &passive, mockUserInputInst.get); got != tt.want {
 				t.Errorf("Turn() = %v, want %v", got, tt.want)
 				assert.Equal(t, 1, 1)
 			}
@@ -376,6 +378,43 @@ func Test_min(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := min(tt.args.i, tt.args.j); got != tt.want {
 				t.Errorf("min() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestNewGame(t *testing.T) {
+	type args struct {
+		p1        Player
+		p2        Player
+		userInput func() string
+		turn      func(iter int, active, passive Player, getInput func() string) bool
+	}
+	tests := []struct {
+		name string
+		args args
+		want *Game
+	}{
+		{
+			name: "Happy",
+			args: args{
+				p1:        &mockPlayer{},
+				p2:        &mockPlayer{},
+				userInput: nil,
+				turn:      nil,
+			},
+			want: &Game{
+				p1:        &mockPlayer{},
+				p2:        &mockPlayer{},
+				userInput: nil,
+				turn:      nil,
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := NewGame(tt.args.p1, tt.args.p2, tt.args.userInput, tt.args.turn); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("NewGame() = %v, want %v", got, tt.want)
 			}
 		})
 	}

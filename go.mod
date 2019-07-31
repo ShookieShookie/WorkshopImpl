@@ -1,4 +1,4 @@
-module gameimpl
+module github.com/ShookieShookie/WorkshopImpl
 
 go 1.12
 

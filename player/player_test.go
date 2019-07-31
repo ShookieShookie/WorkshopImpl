@@ -2,9 +2,11 @@ package player
 
 import (
 	"errors"
+	"reflect"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-	"testing"
 )
 
 type mockHand struct {
@@ -438,6 +440,46 @@ func TestPlayerImpl_PlayCard(t *testing.T) {
 				t.Errorf("PlayerImpl.PlayCard() = %v, want %v", got, tt.want)
 			}
 			h.AssertExpectations(t)
+		})
+	}
+}
+
+func TestNewPlayer(t *testing.T) {
+	type args struct {
+		name        string
+		health      int
+		manaCurrent int
+		hand        Hand
+		deck        Deck
+	}
+	tests := []struct {
+		name string
+		args args
+		want *PlayerImpl
+	}{
+		{
+			name: "happy",
+			args: args{
+				name:        "name",
+				health:      1,
+				manaCurrent: 0,
+				hand:        &mockHand{},
+				deck:        &mockDeck{},
+			},
+			want: &PlayerImpl{
+				name:        "name",
+				health:      1,
+				manaCurrent: 0,
+				hand:        &mockHand{},
+				deck:        &mockDeck{},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := NewPlayer(tt.args.name, tt.args.health, tt.args.manaCurrent, tt.args.hand, tt.args.deck); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("NewPlayer() = %v, want %v", got, tt.want)
+			}
 		})
 	}
 }

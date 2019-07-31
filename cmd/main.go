@@ -14,35 +14,22 @@ import (
 
 var originalDeck = []int{0, 0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 6, 6, 7, 8}
 
-type Player interface {
-	ApplyDamage(int)
-	GetHealth() int
-	SetMana(int)
-	PlayCard(index int) (int, error)
-	IsDead() bool
-	Draw() error
-	ID() string
-	PrintStats()
-}
-
 func main() {
 	rand.Seed(int64(time.Now().Second()))
-	h1 := hand.HandImpl{cards: []int{}}
-	d1 := deck.DeckImpl{cards: []int{}}
-	d1.getIndex = rand.Intn
+	h1 := hand.NewHand()
+	d1 := deck.NewDeck(rand.Intn)
 	for i := 0; i < 20; i++ {
 		d1.Add(originalDeck[i])
 	}
-	p1 := player.PlayerImpl{health: 30, name: "player 1", hand: &h1, deck: &d1}
-	h2 := hand.HandImpl{cards: []int{}}
-	d2 := deck.DeckImpl{cards: []int{}}
-	d2.getIndex = rand.Intn
+	p1 := player.NewPlayer("player1", 30, 0, h1, d1)
+	h2 := hand.NewHand()
+	d2 := deck.NewDeck(rand.Intn)
 	for i := 0; i < 20; i++ {
 		d2.Add(originalDeck[i])
 	}
-	p2 := player.PlayerImpl{health: 30, name: "player 2", hand: &h2, deck: &d2}
+	p2 := player.NewPlayer("player2", 30, 0, h2, d2)
 
-	g := game.Game{p1: &p1, p2: &p2, userInput: getCard, turn: turn}
+	g := game.NewGame(p1, p2, getCard, game.Turn)
 	g.Start()
 }
 

@@ -8,6 +8,12 @@ type HandImpl struct {
 	cards []int
 }
 
+func NewHand() *HandImpl {
+	return &HandImpl{
+		cards: []int{},
+	}
+}
+
 func (h *HandImpl) Add(card int) {
 	if len(h.cards) < 5 {
 		h.cards = append(h.cards, card)

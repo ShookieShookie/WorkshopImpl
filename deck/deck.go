@@ -5,6 +5,13 @@ type DeckImpl struct {
 	cards    []int
 }
 
+func NewDeck(getIndex func(int) int) *DeckImpl {
+	return &DeckImpl{
+		getIndex: getIndex,
+		cards:    []int{},
+	}
+}
+
 func (d *DeckImpl) Draw() int {
 	if len(d.cards) == 0 {
 		return -1

@@ -1,6 +1,7 @@
 package deck
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -80,6 +81,35 @@ func TestDeckImpl_Add(t *testing.T) {
 			}
 			d.Add(tt.args.c)
 			assert.Equal(t, tt.want, d.cards)
+		})
+	}
+}
+
+func TestNewDeck(t *testing.T) {
+	type args struct {
+		getIndex func(int) int
+	}
+	tests := []struct {
+		name string
+		args args
+		want *DeckImpl
+	}{
+		{
+			name: "happy",
+			args: args{
+				getIndex: nil,
+			},
+			want: &DeckImpl{
+				cards:    []int{},
+				getIndex: nil,
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := NewDeck(tt.args.getIndex); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("NewDeck() = %v, want %v", got, tt.want)
+			}
 		})
 	}
 }
