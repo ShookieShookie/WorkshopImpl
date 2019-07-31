@@ -66,6 +66,7 @@ func Turn(iter int, active, passive Player, getInput func() string) bool {
 	active.SetMana(min(iter, 10))
 	err := active.Draw()
 	if err != nil {
+		fmt.Println("You tried to draw with no cards in your deck! Applying burn damage")
 		active.ApplyDamage(1) // no deck
 	}
 	for {
